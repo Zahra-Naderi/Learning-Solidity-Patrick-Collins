@@ -67,4 +67,12 @@ contract FundMe {
         fund();
     }    
 
+    function getAddressToAmountFunded(address fundingAddress) public view returns (uint256) { // For Interfacing with Off-Chain Systems
+        return addressToAmountFunded[fundingAddress];
+    }
+
+    function getFunder(uint256 index) public view returns (address) {
+        return funders[index];
+    }
+
 }
