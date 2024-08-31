@@ -5,7 +5,6 @@ pragma solidity ^0.8.19;
 import {Test, console} from "forge-std/Test.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {DeployFundMe} from "../script/DeployFundMe.s.sol";
-//import {console} from "forge-std/console.sol"; //Print Output
 //console.log("USER:",USER);
 
 
@@ -14,6 +13,7 @@ contract FundMeTest is Test {
     address USER = makeAddr("user"); //Creat fake sender address to avoid confusion.
     uint256 constant SEND_VALUE = 0.1 ether;
     uint256 constant STARTING_BALANCE = 100 ether;
+    uint256 constant GAS_PRICE = 1;
 
     function setUp() external {
         //fundMe = new FundMe(0x694AA1769357215DE4FAC081bf1f309aDC325306);
@@ -61,8 +61,12 @@ contract FundMeTest is Test {
         uint256 startingFundMeBalance = address(fundMe).balance;
         uint256 startingOwnerBalance = fundMe.getOwner().balance;
 
+        //uint256 gasStart = gasleft(); //Simulate Gas
+        //vm.txGasPrice(GAS_PRICE);
         vm.prank(fundMe.getOwner());
         fundMe.withdraw();
+        //uint256 gasEnd = gasleft();
+        //uint256 gasUsed = (gasStart - gasEnd) * tx.gasprice;
 
         uint256 endingFundMeBalance = address(fundMe).balance;
         uint256 endingOwnerBalance = fundMe.getOwner().balance;
@@ -89,7 +93,6 @@ contract FundMeTest is Test {
         assert(address(fundMe).balance == 0);
         assert(startingFundMeBalance + startingOwnerBalance == fundMe.getOwner().balance);
         assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
-        
     } 
-
 }
+

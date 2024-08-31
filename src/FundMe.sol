@@ -36,9 +36,11 @@ contract FundMe {
         return s_priceFeed.version();
     }
 
+
     function withdraw() public onlyOwner{
         //require(msg.sender == owner, "Must be owner!");
-        for(uint256 funderIndex=0; funderIndex < funders.length; funderIndex++){
+        uint256 fundersLength = funders.length; // Use storage once, make it cheaper.
+        for(uint256 funderIndex=0; funderIndex < fundersLength; funderIndex++){
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
